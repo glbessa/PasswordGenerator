@@ -1,6 +1,18 @@
 import string
 import sys
 import secrets
+import argparse
+
+def set_arguments():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('-l', '--lenght', type=int, default=8)
+    ap.add_argument('-ex', '--exceptions', type=str, help='Exceptions :P', nargs='*', default=[])
+    ap.add_argument('--no-special', action='store_false', help='No special caracteres in the key')
+    ap.add_argument('--no-lower', action='store_false')
+    ap.add_argument('--no-upper', action='store_false')
+    ap.add_argument('--no-number', action='store_false')
+    ap.add_argument('--no-char', action='store_false')
+    return vars(ap.parse_args())
 
 def upperletters():
     return string.ascii_uppercase
@@ -14,7 +26,7 @@ def digits():
 def specialsymbols():
     symbols = string.punctuation
     
-    invalidsymbols = ["'", '"', ',', '.', ':', ';', '`', '~']
+    invalidsymbols = ["'", '"'] #',', '.', ':', ';', '`', '~']
     
     for i in invalidsymbols:
         symbols = symbols.replace(i, '')
@@ -35,7 +47,7 @@ def integrator(numbers=True, upper=True, lower=True, special=True, exceptions=''
 
     return validkeys
 
-def generate(keys, lenght=8):
+def generate(keys, lenght):
     return ''.join(secrets.choice(keys) for i in range(lenght))
 
 if __name__ == '__main__':
@@ -46,7 +58,7 @@ if __name__ == '__main__':
         if i in sys.argv:
             keys.join(integrator(digits, upper, lower, special))
    '''
-
+    '''
     n, u, l, s = True, True, True, True
     e = ''    
 
@@ -58,7 +70,10 @@ if __name__ == '__main__':
         l = False
     if '--no-special' in sys.argv:
         s = False
-    if '--exceptions' in sys.argv:
-        e = sys.argv[(sys.argv.index('--exceptions')+1)]
+    #if '--exceptions' in sys.argv:
+    #    e = sys.argv[(sys.argv.index('--exceptions')+1)]
+    '''
 
-    print((generate(integrator(n, u, l, s, e), int(sys.argv[1]))))
+    args = set_arguments()
+
+    print(generate(integrator(args['no_number'], args['no_upper'], args['no_lower'], args['no_special'], args['exceptions']), args['lenght']))
