@@ -32,10 +32,13 @@ def specialsymbols():
         symbols = symbols.replace(i, '')
     return symbols
 
-def integrator(numbers=True, upper=True, lower=True, special=True, exceptions=''):
+def integrator(numbers=True, char=True, upper=True, lower=True, special=True, exceptions=''):
     validkeys = ''
     if numbers:
         validkeys += validkeys+digits()
+    if char == False:
+        upper = False
+        lower = False
     if upper:
         validkeys += upperletters()
     if lower:
@@ -76,4 +79,4 @@ if __name__ == '__main__':
 
     args = set_arguments()
 
-    print(generate(integrator(args['no_number'], args['no_upper'], args['no_lower'], args['no_special'], args['exceptions']), args['lenght']))
+    print(generate(integrator(args['no_number'], args['no_char'], args['no_upper'], args['no_lower'], args['no_special'], args['exceptions']), args['lenght']))
